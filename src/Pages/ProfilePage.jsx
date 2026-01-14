@@ -40,7 +40,7 @@ function ProfilePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <section className="min-h-screen bg-gray-50 py-12 mt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <ProfileHeader user={user} />
 
@@ -62,7 +62,7 @@ function ProfilePage() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
