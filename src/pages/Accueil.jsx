@@ -2,7 +2,7 @@ import React from 'react'
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { FiTrendingDown } from "react-icons/fi";
 import Heroimage from '../assets/hero-image.jpg'
-import Fonctionnalites from '../components/UI/fonctionnalites.jsx';
+import Fonctionnalites from '../components/UI/Fonctionnalites.jsx';
 import Marche from '../components/UI/Marche.jsx';
 import Categorie from '../components/UI/Categorie.jsx';
 import Difference from '../components/UI/difference.jsx';
