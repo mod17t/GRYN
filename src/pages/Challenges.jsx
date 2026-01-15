@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { AiOutlineArrowRight } from "react-icons/ai";
-import { FiTrendingDown, FiCalendar, FiUsers } from "react-icons/fi";
-import ChallengeImage from 'https://www.shutterstock.com/image-vector/challenge-accepted-colloquial-expression-indicating-600nw-2465263431.jpg'; 
+import { ArrowRight, TrendingDown, Calendar, Users } from 'lucide-react';
 
 function Challenges() {
     const [activeTab, setActiveTab] = useState('actifs');
@@ -67,20 +65,20 @@ function Challenges() {
                                 aria-label="Voir les challenges" 
                                 className='w-full sm:w-auto rounded-lg bg-green-600 px-6 py-3 text-white font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2'
                             >
-                                Voir les challenges <AiOutlineArrowRight className='h-5 w-5' />
+                                Voir les challenges <ArrowRight className='h-5 w-5' />
                             </button>
                         </div>
                     </div>
 
                     <div className='relative w-full md:w-1/2'>
                         <img 
-                            src={ChallengeImage} 
+                            src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&auto=format&fit=crop" 
                             alt="Personnes participant à des défis écologiques" 
                             className='w-full h-64 sm:h-80 md:h-auto rounded-3xl object-cover shadow-lg'
                         />
                         <div className='absolute left-4 bottom-4 flex items-center gap-3 rounded-xl bg-white px-4 py-3 shadow-xl md:left-8 md:bottom-8'>
                             <div className='flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600'>
-                                <FiUsers className='h-5 w-5' />
+                                <Users className='h-5 w-5' />
                             </div>
                             <div>
                                 <p className='text-sm text-gray-500'>Participants actifs</p>
@@ -92,7 +90,6 @@ function Challenges() {
             </section>
             <section className='bg-gray-50 px-8 py-16'>
                 <div className='mx-auto max-w-7xl'>
-                    {/* Tabs */}
                     <div className='flex gap-4 mb-8 border-b border-gray-200'>
                         <button
                             onClick={() => setActiveTab('actifs')}
@@ -142,15 +139,15 @@ function Challenges() {
 
                                 <div className='space-y-2 mb-4'>
                                     <div className='flex items-center gap-2 text-sm text-gray-500'>
-                                        <FiCalendar className='h-4 w-4' />
+                                        <Calendar className='h-4 w-4' />
                                         <span>{challenge.duree}</span>
                                     </div>
                                     <div className='flex items-center gap-2 text-sm text-gray-500'>
-                                        <FiUsers className='h-4 w-4' />
+                                        <Users className='h-4 w-4' />
                                         <span>{challenge.participants} participants</span>
                                     </div>
                                     <div className='flex items-center gap-2 text-sm text-green-600 font-semibold'>
-                                        <FiTrendingDown className='h-4 w-4' />
+                                        <TrendingDown className='h-4 w-4' />
                                         <span>{challenge.reduction}</span>
                                     </div>
                                 </div>
@@ -171,21 +168,21 @@ function Challenges() {
                     <div className='grid gap-8 md:grid-cols-3'>
                         <div className='text-center'>
                             <div className='inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 mb-4'>
-                                <FiUsers className='h-8 w-8' />
+                                <Users className='h-8 w-8' />
                             </div>
                             <p className='text-4xl font-bold text-gray-900 mb-2'>5,247</p>
                             <p className='text-gray-600'>Participants actifs</p>
                         </div>
                         <div className='text-center'>
                             <div className='inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 mb-4'>
-                                <FiTrendingDown className='h-8 w-8' />
+                                <TrendingDown className='h-8 w-8' />
                             </div>
                             <p className='text-4xl font-bold text-gray-900 mb-2'>1,2M kg</p>
                             <p className='text-gray-600'>CO₂ économisé</p>
                         </div>
                         <div className='text-center'>
                             <div className='inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 mb-4'>
-                                <FiCalendar className='h-8 w-8' />
+                                <Calendar className='h-8 w-8' />
                             </div>
                             <p className='text-4xl font-bold text-gray-900 mb-2'>47</p>
                             <p className='text-gray-600'>Challenges complétés</p>
