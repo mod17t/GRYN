@@ -3,24 +3,24 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './pages/Accueil'
 import Footer from './components/UI/Footer'
-import ProfilePage from './Pages/ProfilePage';
-import Calculateur from './pages/Calculateur'
 
+import ProfilePage from './Pages/ProfilePage';
+import Calculateur from './pages/Calculateur';
+import Challenges from './pages/Challenges';
 
 
 function App() {
   return (
-    
     <>
       <main>
-      <Navbar />
+        <Navbar />
         <Routes>
           <Route path="/" element={<Hero />} />
           <Route path="/Profil" element={<ProfilePage />} />
           <Route path="/Calculateur" element={<Calculateur/>} />
           <Route path="/challenges" element={<h1>Challenges</h1>} />
-        </Routes>
-        <Footer/>
+       </Routes>
+        <Footer />
       </main>
     </>
   )
