@@ -248,7 +248,7 @@ const ResultsSection = ({ formData }) => {
   );
 };
 
-export default function Calculateur() {
+export default function App() {
   const [formData, setFormData] = useState({
     transport: { voiture: 0, train: 0, bus: 0 },
     alimentation: { regime: 'Omnivore', frequence: 50 },
@@ -274,7 +274,7 @@ export default function Calculateur() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-20">
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
         <div className="mb-6 sm:mb-8">
