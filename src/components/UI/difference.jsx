@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 function Difference() {
     return (
         <>
-            <div className='h-13 md:h-18' aria-label='spacer'/>
+            <div className='h-13 md:h-18 bg-emerald-700' aria-label='spacer'/>
 
             <main className='bg-emerald-700 pt-18'>
                 <section className='rounded-2xl flex items-center justify-center flex-col text-center px-6 py-12 mx-auto max-w-7xl'>

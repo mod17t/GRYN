@@ -32,7 +32,7 @@ function Marche() {
         <>
             {/* spacer for fixed navbar */}
 
-            <div className='h-13 md:h-3' aria-label='True'/>
+            <div className='h-13 md:h-3 bg-white' aria-label='True'/>
 
             <main className='bg-white'>
                 <section>

@@ -5,7 +5,7 @@ function Fonctionnalites() {
         <>
             {/* spacer for fixed navbar */}
 
-            <div className='h-13 md:h-18' aria-label='True'/>
+            <div className='h-13 md:h-18 bg-white' aria-label='True'/>
 
             <main className='bg-white'>
                 <section className='rounded-2xl flex items-center justify-center flex-col text-center px-6 py-12 mx-auto max-w-7xl'>

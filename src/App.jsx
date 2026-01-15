@@ -7,6 +7,7 @@ import ProfilePage from './Pages/ProfilePage';
 import Calculateur from './pages/Calculateur'
 
 
+
 function App() {
   return (
     
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Hero />} />
           <Route path="/Profil" element={<ProfilePage />} />
           <Route path="/Calculateur" element={<Calculateur/>} />
+          <Route path="/challenges" element={<h1>Challenges</h1>} />
         </Routes>
         <Footer/>
       </main>
