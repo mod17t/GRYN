@@ -5,6 +5,7 @@ import CurrentStats from '../components/profil/currentStats';
 import GoalsSection from '../components/profil/GoalsSection';
 import ImpactSummary from '../components/profil/ImpactSummary';
 import QuickActions from '../components/profil/QuickActions';
+import EmissionsChart from '../components/profil/EmissionChart';
 
 function ProfilePage() {
   const user = {
@@ -15,6 +16,17 @@ function ProfilePage() {
     points: 1250
   };
 
+  const monthlyData = [
+    { month: "Jan", emissions: 850 },
+    { month: "Fév", emissions: 820 },
+    { month: "Mar", emissions: 780 },
+    { month: "Avr", emissions: 720 },
+    { month: "Mai", emissions: 680 },
+    { month: "Jun", emissions: 650 },
+    { month: "Jul", emissions: 600 },
+    { month: "Aoû", emissions: 580 }
+  ];
+  
   const badges = [
     { name: "Éco-débutant", icon: "🌱", date: "Mars 2024", earned: true },
     { name: "Cycliste urbain", icon: "🚴", date: "Avril 2024", earned: true },
@@ -40,13 +52,14 @@ function ProfilePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <section className="min-h-screen bg-gray-50 py-12 mt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <ProfileHeader user={user} />
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Contenu principal */}
           <div className="lg:col-span-2 space-y-8">
+            <EmissionsChart data={monthlyData} />
             <BadgesSection badges={badges} />
             <RecentActivity activities={recentActivities} />
           </div>
@@ -62,7 +75,7 @@ function ProfilePage() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
