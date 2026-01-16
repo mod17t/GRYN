@@ -6,7 +6,7 @@ function BadgeItem({ badge }) {
     <div
       className={`text-center p-4 rounded-xl transition-all ${
         badge.earned
-          ? "bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-200"
+          ? "bg-linear-to-br from-amber-50 to-amber-100 border-2 border-amber-200"
           : "bg-gray-50 opacity-50"
       }`}
     >
