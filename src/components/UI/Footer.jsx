@@ -14,7 +14,7 @@ export default function Footer() {
     ];
 
     const Ressources = [
-            { name: 'À propos', link: '/àpropos' },
+            { name: 'À propos', link: '/about' },
             { name: 'Documentation', link: '/docs' },
             { name: 'FAQ', link: '/faq' },
             { name: 'Contact', link: '/contact' },
