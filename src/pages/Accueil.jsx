@@ -10,7 +10,7 @@ import Difference from '../components/UI/difference.jsx';
 function Hero() {
     return (    
         <>
-        <section className='bg-white text-emerald-700 px-8 py-1'>
+        <section className='bg-white text-emerald-700 px-8 py-1 pt-30 md:pt-0'>
             <div className='mx-auto max-w-7xl flex flex-col-reverse items-center gap-8 md:flex-row md:items-center'>
                 <div className='w-full md:w-1/2 space-y-6'>
                     <span className='inline-flex items-center rounded-full bg-green-100 px-4 py-1 text-sm font-medium text-green-700 sm:mt-30'>

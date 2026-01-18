@@ -7,6 +7,7 @@ import Footer from './components/UI/Footer'
 import ProfilePage from './Pages/ProfilePage';
 import Calculateur from './pages/Calculateur';
 import Challenges from './pages/Challenges';
+import Apropos from './pages/Apropos';
 
 
 function App() {
@@ -18,8 +19,9 @@ function App() {
           <Route path="/" element={<Hero />} />
           <Route path="/Profil" element={<ProfilePage />} />
           <Route path="/Calculateur" element={<Calculateur/>} />
-          <Route path="/challenges" element={<h1>Challenges</h1>} />
-       </Routes>
+          <Route path="/Challenges" element={<Challenges/>} />
+          <Route path="/about" element={<Apropos/>} />
+        </Routes>
         <Footer />
       </main>
     </>
