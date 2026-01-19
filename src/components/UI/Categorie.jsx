@@ -59,9 +59,8 @@ function Categorie() {
         <>
             {/* spacer for fixed navbar */}
 
-            <div className='h-13 md:h-3 bg-white' aria-label='True'/>
 
-            <main className='bg-white'>
+            <main className='bg-white pt-6 md:pt-12'>
                 <section className='rounded-2xl flex items-center justify-center flex-col text-center px-6 py-12 mx-auto max-w-7xl'>
                     <h1 className='text-black font-normal text-xl lg:text-lg'>
                         Catégories Suivies

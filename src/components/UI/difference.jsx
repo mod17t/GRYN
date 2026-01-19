@@ -4,9 +4,9 @@ import { ArrowRight } from 'lucide-react';
 function Difference() {
     return (
         <>
-            <div className='h-13 md:h-18 bg-emerald-700' aria-label='spacer'/>
+           
 
-            <main className='bg-emerald-700 pt-18'>
+            <main className='bg-emerald-700 pt-10 md:pt-18'>
                 <section className='rounded-2xl flex items-center justify-center flex-col text-center px-6 py-12 mx-auto max-w-7xl'>
                     <h1 className='text-white font-normal text-xl lg:text-lg'>
                         Prêt à faire la différence ?

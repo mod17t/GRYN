@@ -48,7 +48,7 @@ function Challenges() {
 
     return (
         <>
-            <section className='bg-white text-emerald-700 px-8 py-1 mt-20'>
+            <section className='bg-white text-emerald-700 px-8 py-1 mt-30'>
                 <div className='mx-auto max-w-7xl flex flex-col-reverse items-center gap-8 md:flex-row md:items-center'>
                     <div className='w-full md:w-1/2 space-y-6'>
                         <span className='inline-flex items-center rounded-full bg-green-100 px-4 py-1 text-sm font-medium text-green-700'>
