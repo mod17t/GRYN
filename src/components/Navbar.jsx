@@ -45,8 +45,8 @@ function Navbar() {
                         aria-label='Global' 
                         className={`flex items-center justify-between transition-all duration-300 ${
                             scrolled 
-                                ? 'p-3 sm:p-4 lg:px-6' 
-                                : 'p-4 sm:p-6 lg:px-8'
+                                ? 'p-2 sm:p-2 lg:px-6' 
+                                : 'p-4 sm:p-3 lg:px-8'
                         }`}
                     >
                         <div className='flex lg:flex-1'>
