@@ -90,13 +90,13 @@ function Navbar() {
                             ))}
                         </div>
 
-                        <div className=' hidden  ml-10 py-6'>
+                        <div className='hidden lg:flex ml-10 py-6'>
                             <a href="#"
-                            className='flex items-center justify-center text-center group relative text-sm font-semibold text-gray-600 transition hover:text-green-700'
+                            className='flex items-center justify-center text-center group relative text-sm font-semibold text-gray-600 transition hover:text-red-700'
                             >
                                 Log in 
                                 <ArrowRight className='ml-2 w-4 h-4 mt-1' />
-                                <span className='absolute -bottom-1 left-0 h-0.5 w-full origin-left scale-x-0 bg-green-700 transition-transform duration-300 group-hover:scale-x-100' />
+                                <span className='absolute -bottom-1 left-0 h-0.5 w-full origin-left scale-x-0 bg-red-700 transition-transform duration-300 group-hover:scale-x-100' />
                             </a>
                         </div>
                     </nav>
