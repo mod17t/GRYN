@@ -90,7 +90,7 @@ function Navbar() {
                             ))}
                         </div>
 
-                        <div className=' ml-10 py-6'>
+                        <div className=' hidden  ml-10 py-6'>
                             <a href="#"
                             className='flex items-center justify-center text-center group relative text-sm font-semibold text-gray-600 transition hover:text-green-700'
                             >
