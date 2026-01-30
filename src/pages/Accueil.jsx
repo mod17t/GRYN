@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { Leaf } from 'lucide-react';
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { FiTrendingDown } from "react-icons/fi";
 import Heroimage from '../assets/hero-image.jpg'
@@ -8,15 +9,31 @@ import Categorie from '../components/UI/Categorie.jsx';
 import Difference from '../components/UI/difference.jsx';
 
 function Hero() {
+    const [msg, setMsg] = useState("");
+
+    useEffect(() => {
+        fetch('http://localhost:8000/api/test')
+            .then(response => response.json())
+            .then(data => {
+                setMsg(data.message);
+            })
+    }, []);
+
     return (    
         <>
-        <section className='bg-white text-emerald-700 px-8 py-1 pt-30 md:pt-0'>
+        <section className='bg-white text-emerald-700 px-8 py-1 pt-30 md:pt-20'>
             <div className='mx-auto max-w-7xl flex flex-col-reverse items-center gap-8 md:flex-row md:items-center'>
-                <div className='w-full md:w-1/2 space-y-6'>
-                    <span className='inline-flex items-center rounded-full bg-green-100 px-4 py-1 text-sm font-medium text-green-700 sm:mt-30'>
-                        Pour un avenir durable
-                    </span>
-
+                <div className='w-full md:w-1/2 space-y-6 -mb-8'>
+                    {msg && (
+                        
+                        <>
+                            
+                            <span className='inline-flex items-center rounded-full bg-green-100 px-4 py-1 text-sm font-medium text-green-700 sm:mt-30'>
+                                <Leaf className=' h-4 w-4 text-green-600 mr-2' />
+                                {msg}
+                            </span>
+                        </>
+                    )}
                     <h1 className="text-3xl sm:text-4xl lg:text-6xl font-normal text-gray-900 leading-tight">
                         Suivez et réduisez votre <span className="text-green-600">empreinte carbone</span>
                     </h1>

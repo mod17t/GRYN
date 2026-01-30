@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Logo from '../assets/logo.png'
 import { IoMenu, IoClose } from "react-icons/io5";
+import { ArrowRight } from 'lucide-react';
 
 function Navbar() {
     const navigation = [
@@ -10,6 +11,9 @@ function Navbar() {
         { name: 'Profil', link: '/Profil'},
         { name: 'À propos', link: '/about' },
     ]
+
+
+
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
@@ -85,6 +89,16 @@ function Navbar() {
                                 </a>
                             ))}
                         </div>
+
+                        <div className=' ml-10 py-6'>
+                            <a href="#"
+                            className='flex items-center justify-center text-center group relative text-sm font-semibold text-gray-600 transition hover:text-green-700'
+                            >
+                                Log in 
+                                <ArrowRight className='ml-2 w-4 h-4 mt-1' />
+                                <span className='absolute -bottom-1 left-0 h-0.5 w-full origin-left scale-x-0 bg-green-700 transition-transform duration-300 group-hover:scale-x-100' />
+                            </a>
+                        </div>
                     </nav>
                 </header>
 
@@ -120,6 +134,8 @@ function Navbar() {
                                     ))}
                                 </nav>
                             </div>
+
+                            
                         </div>
                     </div>
                 )}
