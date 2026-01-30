@@ -318,7 +318,7 @@ export default function Apropos() {
 
             <a 
             href="#"
-            className='="inline-flex items-center justify-center px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 rounded-lg hover:border-emerald-600 hover:text-emerald-600 transition-colors'
+            className='="inline-flex text-center items-center justify-center px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 rounded-lg hover:border-emerald-600 hover:text-emerald-600 transition-colors'
             >
               Nous contacter
             </a>
