@@ -9,13 +9,13 @@ function Navbar() {
         { name: 'Accueil', link: '/' },
         { name: 'Calculateur', link: '/calculateur'},
         { name: 'Challenges', link: '/challenges'},
-        { name: 'Profil', link: '/Profil'},
+        { name: 'Profil', link: '/profil'},
         { name: 'À propos', link: '/about' },
     ]
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
-    const [token, setToken] = useState("");
+    const [token, SetToken] = useState("");
 
     // Handle scroll effect
     useEffect(() => {
@@ -27,7 +27,7 @@ function Navbar() {
             }
         }
 
-        setToken(localStorage.getItem('teddy-token'));
+        /* setToken(localStorage.getItem('teddy-token')); */
 
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
@@ -46,8 +46,8 @@ function Navbar() {
                         aria-label='Global' 
                         className={`flex items-center justify-between transition-all duration-300 ${
                             scrolled 
-                                ? 'p-3 sm:p-4 lg:px-6' 
-                                : 'p-4 sm:p-6 lg:px-8'
+                                ? 'p-2 sm:p-1 lg:px-3' 
+                                : 'p-3 sm:p-2 lg:px-4'
                         }`}
                     >
                         <div className='flex lg:flex-1'>

@@ -48,8 +48,8 @@ const Login = () => {
     <div className="min-h-screen mt-10 flex items-center justify-center bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 px-4">
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-            <Leaf className="w-8 h-8 text-white" />
+          <div className="w-15 h-15 mt-7 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+            <Leaf className="w-6 h-6 text-white " />
           </div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">GRYN</h1>
           {mode === "login" ? (
@@ -149,7 +149,7 @@ const Login = () => {
           )}
           <div className="flex justify-end">
             <Link
-              to="#"
+              to="/forgot-password"
               className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
             >
               Mot de passe oublié ?

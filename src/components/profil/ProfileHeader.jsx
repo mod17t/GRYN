@@ -31,7 +31,7 @@ function ProfileHeader({ user }) {
         </div>
         <button
           className="px-6 py-3 bg-white text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors font-medium"
-          onClick={() => navigate("/editProfile")}
+          onClick={() => navigate("/edit-profile")}
         >
           Modifier le profil
         </button>
