@@ -120,7 +120,7 @@ const Login = () => {
           {mode === "sign up" && (
             <div className="space-y-2">
               <label
-                htmlFor="password"
+                htmlFor="confirmPassword"
                 className="block text-sm font-medium text-gray-700"
               >
                 Confirmer le mot de passe
@@ -128,7 +128,7 @@ const Login = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-600" />
                 <input
-                  id="password"
+                  id="confirmPassword"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={confirmPassword}
@@ -149,14 +149,16 @@ const Login = () => {
               </div>
             </div>
           )}
-          <div className="flex justify-end">
-            <Link
-              to="/forgot-password"
-              className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
-            >
-              Mot de passe oublié ?
-            </Link>
-          </div>
+          {mode === "login" && (
+            <div className="flex justify-end">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+              >
+                Mot de passe oublié ?
+              </Link>
+            </div>
+          )}
 
           <button
             type="submit"
