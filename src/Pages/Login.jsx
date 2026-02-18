@@ -1,24 +1,55 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router";
 import { Leaf, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+const Login = () => {
+  const navigate = useNavigate();
+  const [formState, setFormState] = useState({
+    email: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [mode, setMode] = useState("login");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password });
+    {/* forgot-password.jsx (1 champ email) | reset-password.jsx (2 champs password et confirm_password) | change-password.jsx (2 champs password et confirm_password) */}
+
+    fetch('http://localhost:8000/api/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formState)
+    })
+    .then(response => {
+      console.log(response);
+      response.json()
+    })
+    .then(data => {
+      if (data.plainTextToken) {
+        localStorage.setItem('account_token', data.plainTextToken)
+        navigate('/')
+      }
+    })
   };
+
+  const handleChange = (e) => {
+    let field = e.target;
+    setFormState(prevState => ({
+      ...prevState,
+      [field.name]: field.value
+    }));
+    
+  }
 
   return (
     <div className="min-h-screen mt-10 flex items-center justify-center bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 px-4">
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-            <Leaf className="w-8 h-8 text-white" />
+          <div className="w-15 h-15 mt-7 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+            <Leaf className="w-6 h-6 text-white " />
           </div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">GRYN</h1>
           {mode === "login" ? (
@@ -42,10 +73,11 @@ function Login() {
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-600" />
               <input
                 id="email"
-                type="email"
+                type="email" // "username="teddy@...&password=Xaerybfi"
+                name="email"
                 placeholder="votre@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formState.email}
+                onChange={handleChange}
                 className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
               />
             </div>
@@ -64,8 +96,9 @@ function Login() {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={formState.password}
+                onChange={handleChange}
                 className="w-full pl-11 pr-11 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
               />
               <button
@@ -115,17 +148,17 @@ function Login() {
             </div>
           )}
           <div className="flex justify-end">
-            {mode === "login" && (
-              <button
-                type="button"
-                className="text-sm text-emerald-600 cursor-pointer hover:text-emerald-700 font-medium transition-colors"
-              >
-                Mot de passe oublié ?
-              </button>
-            )}
+            <Link
+              to="/forgot-password"
+              className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+            >
+              Mot de passe oublié ?
+            </Link>
+            
           </div>
 
           <button
+            type="submit"
             onClick={handleSubmit}
             className="w-full py-3 cursor-pointer bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all"
           >

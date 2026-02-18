@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import Logo from '../assets/logo.png'
 import { IoMenu, IoClose } from "react-icons/io5";
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router';
 
 function Navbar() {
     const navigation = [
         { name: 'Accueil', link: '/' },
         { name: 'Calculateur', link: '/calculateur'},
         { name: 'Challenges', link: '/challenges'},
-        { name: 'Profil', link: '/Profil'},
+        { name: 'Profil', link: '/profil'},
         { name: 'À propos', link: '/about' },
     ]
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
+    const [token, SetToken] = useState("");
 
     // Handle scroll effect
     useEffect(() => {
@@ -23,6 +26,8 @@ function Navbar() {
                 setScrolled(false)
             }
         }
+
+        /* setToken(localStorage.getItem('teddy-token')); */
 
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
@@ -41,8 +46,8 @@ function Navbar() {
                         aria-label='Global' 
                         className={`flex items-center justify-between transition-all duration-300 ${
                             scrolled 
-                                ? 'p-3 sm:p-4 lg:px-6' 
-                                : 'p-4 sm:p-6 lg:px-8'
+                                ? 'p-2 sm:p-1 lg:px-3' 
+                                : 'p-3 sm:p-2 lg:px-4'
                         }`}
                     >
                         <div className='flex lg:flex-1'>
@@ -84,6 +89,16 @@ function Navbar() {
                                     <span className='absolute -bottom-1 left-0 h-0.5 w-full origin-left scale-x-0 bg-green-700 transition-transform duration-300 group-hover:scale-x-100' />
                                 </a>
                             ))}
+                        </div>
+
+                        <div className='hidden lg:flex ml-10 py-6'>
+                            <Link to="/login"
+                            className='flex items-center justify-center text-center group relative text-sm font-semibold text-gray-600 transition hover:text-red-700'
+                            >
+                                {token ? "Logout" : "Login"}
+                                <ArrowRight className='ml-2 w-4 h-4 mt-1' />
+                                <span className='absolute -bottom-1 left-0 h-0.5 w-full origin-left scale-x-0 bg-red-700 transition-transform duration-300 group-hover:scale-x-100' />
+                            </Link>
                         </div>
                     </nav>
                 </header>
