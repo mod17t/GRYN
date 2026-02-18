@@ -8,41 +8,43 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [mode, setMode] = useState("login");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    {/* forgot-password.jsx (1 champ email) | reset-password.jsx (2 champs password et confirm_password) | change-password.jsx (2 champs password et confirm_password) */}
+    {
+      /* forgot-password.jsx (1 champ email) | reset-password.jsx (2 champs password et confirm_password) | change-password.jsx (2 champs password et confirm_password) */
+    }
 
-    fetch('http://localhost:8000/api/login', {
-      method: 'POST',
+    fetch("http://localhost:8000/api/login", {
+      method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formState)
+      body: JSON.stringify(formState),
     })
-    .then(response => {
-      console.log(response);
-      response.json()
-    })
-    .then(data => {
-      if (data.plainTextToken) {
-        localStorage.setItem('account_token', data.plainTextToken)
-        navigate('/')
-      }
-    })
+      .then((response) => {
+        console.log(response);
+        response.json();
+      })
+      .then((data) => {
+        if (data.plainTextToken) {
+          localStorage.setItem("account_token", data.plainTextToken);
+          navigate("/");
+        }
+      });
   };
 
   const handleChange = (e) => {
     let field = e.target;
-    setFormState(prevState => ({
+    setFormState((prevState) => ({
       ...prevState,
-      [field.name]: field.value
+      [field.name]: field.value,
     }));
-    
-  }
+  };
 
   return (
     <div className="min-h-screen mt-10 flex items-center justify-center bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 px-4">
@@ -154,7 +156,6 @@ const Login = () => {
             >
               Mot de passe oublié ?
             </Link>
-            
           </div>
 
           <button
@@ -204,5 +205,5 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 export default Login;
