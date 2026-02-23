@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Mail, Send, Lightbulb, Loader, BadgeCheck, BellRing } from 'lucide-react';
+import { ArrowLeft, Mail, Send, Lightbulb, LoaderPinwheel, BadgeCheck, BellRing } from 'lucide-react';
 
 const ForgotPasswordPage = () => {
     const [formState, setFormState] = useState({
@@ -129,7 +129,7 @@ const ForgotPasswordPage = () => {
                                         >
                                             {isLoading ? (
                                                 <>
-                                                    <Loader className="animate-spin" size={20} />
+                                                    <LoaderPinwheel className="animate-spin" size={20} />
                                                     <span className='font-medium'>Envoi en cours...</span>
                                                 </>
                                             ) : (

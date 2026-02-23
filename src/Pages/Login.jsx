@@ -21,13 +21,12 @@ const Login = () => {
     fetch("http://localhost:8000/api/login", {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formState),
     })
       .then((response) => {
-        console.log(response);
         response.json();
       })
       .then((data) => {
@@ -47,10 +46,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen mt-10 flex items-center justify-center bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 px-4">
+    <div className="min-h-screen mt-10 flex items-center justify-center bg-linear-to-br from-emerald-50 via-green-50 to-teal-50 px-4">
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-15 h-15 mt-7 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+          <div className="w-15 h-15 mt-7 bg-linear-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
             <Leaf className="w-6 h-6 text-white " />
           </div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">GRYN</h1>
@@ -163,7 +162,7 @@ const Login = () => {
           <button
             type="submit"
             onClick={handleSubmit}
-            className="w-full py-3 cursor-pointer bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all"
+            className="w-full py-3 cursor-pointer bg-linear-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all"
           >
             {mode === "login" ? (
               <span>Se connecter</span>
@@ -178,7 +177,7 @@ const Login = () => {
             <div className="w-full border-t border-gray-200" />
           </div>
           <div className="relative flex justify-center">
-            <span className="bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 px-4 text-sm text-gray-500">
+            <span className="bg-linear-to-br from-emerald-50 via-green-50 to-teal-50 px-4 text-sm text-gray-500">
               ou
             </span>
           </div>
