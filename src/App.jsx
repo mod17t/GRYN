@@ -6,7 +6,7 @@ import Footer from './components/UI/Footer'
 import ProfilePage from './Pages/ProfilePage';
 import Calculateur from './pages/Calculateur';
 import Challenges from './pages/Challenges';
-import Apropos from './pages/Apropos';
+import Apropos from './Pages/Apropos';
 
 
 function App() {
