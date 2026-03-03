@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './Pages/Accueil'
 import Footer from './components/UI/Footer'
-
 import ProfilePage from './Pages/ProfilePage'
 import Calculateur from './Pages/Calculateur'
 import Challenges from './Pages/Challenges'
