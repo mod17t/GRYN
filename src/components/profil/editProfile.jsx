@@ -27,8 +27,8 @@ function EditProfile() {
     setFormData({
       firstName: "Alex",
       lastName: "Martin",
-      email: "alex.martin@email.com",
     });
+    navigate("/profil");
   };
 
   return (
@@ -80,25 +80,6 @@ function EditProfile() {
                   value={formData.lastName}
                   onChange={handleChange}
                   placeholder="Votre nom"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium mb-2 text-gray-700 flex items-center gap-2"
-                >
-                  <Mail className="w-4 h-4 text-emerald-600" />
-                  Adresse email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="votre.email@exemple.com"
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
                 />
               </div>

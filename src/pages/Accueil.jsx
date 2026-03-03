@@ -9,19 +9,6 @@ import Difference from '../components/UI/difference.jsx';
 
 function Hero() {
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"email": "teddy@example.com","password": "password"})
-            })
-            .then(response => response.json())
-            .then(data => localStorage.setItem('teddy-token', data.plainTextToken))
-    }, []);
-
     return (    
         <>
         <section className='bg-white text-emerald-700 px-8 py-1 pt-30 md:pt-0'>
