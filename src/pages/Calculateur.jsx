@@ -1,6 +1,36 @@
 import React, { useState } from 'react';
 import { Trash2, Car, Utensils, Zap, ShoppingBag } from 'lucide-react';
 
+// Configuration de l'API
+const API_URL = 'http://localhost:8000/api';
+
+const getAuthToken = () => localStorage.getItem('auth_token');
+
+const saveCalculation = async (formData, emissions) => {
+  const response = await fetch(`${API_URL}/calculations`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${getAuthToken()}`,
+    },
+    body: JSON.stringify({
+      transport: formData.transport,
+      alimentation: formData.alimentation,
+      energie: formData.energie,
+      equipements: formData.equipements,
+      emissions: emissions
+    })
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Erreur lors de la sauvegarde');
+  }
+
+  return await response.json();
+};
+
 const InputField = ({ label, value, onChange, icon: Icon }) => (
   <div className="mb-4">
     <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
@@ -12,6 +42,7 @@ const InputField = ({ label, value, onChange, icon: Icon }) => (
         className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-base"
         placeholder="0"
         min="0"
+        step="0.1"
       />
       <button
         onClick={() => onChange(0)}
@@ -69,38 +100,9 @@ const SectionCard = ({ icon: Icon, title, subtitle, children, color }) => (
   </div>
 );
 
-const ResultsSection = ({ formData }) => {
-  // Calculs simplifiés (coefficients d'émission en kg CO2)
-  const transport = formData.transport.voiture * 0.2 + 
-                    formData.transport.train * 0.01 + 
-                    formData.transport.bus * 0.05;
-  
-  // Alimentation basée sur le régime et la fréquence
-  const regimeFactors = {
-    'Omnivore': 2400,
-    'Végétarien': 1680,
-    'Végétalien': 1440,
-    'Pescetarien': 2000
-  };
-  const alimentation = (regimeFactors[formData.alimentation.regime] || 2400) * 
-                       (formData.alimentation.frequence / 100);
-  
-  const energie = (formData.energie.electricite * 0.5 + formData.energie.gaz * 0.3) *
-                  (formData.energie.renouvelable ? 0.3 : 1);
-  
-  // Consommation basée sur le niveau d'achats
-  const consommationFactors = {
-    'Très peu': 500,
-    'Peu': 800,
-    'Moyen': 1050,
-    'Beaucoup': 1500
-  };
-  const consommation = (consommationFactors[formData.equipements.nombre] || 1050) *
-                       (formData.equipements.montant / 100);
+const ResultsSection = ({ formData, emissions }) => {
+  const { transport, alimentation, energie, consommation, total } = emissions;
 
-  const total = transport + alimentation + energie + consommation;
-
-  // Calcul des pourcentages
   const transportPct = total > 0 ? Math.round((transport / total) * 100) : 0;
   const alimentationPct = total > 0 ? Math.round((alimentation / total) * 100) : 0;
   const energiePct = total > 0 ? Math.round((energie / total) * 100) : 0;
@@ -108,19 +110,15 @@ const ResultsSection = ({ formData }) => {
 
   return (
     <div className="mt-8">
-      {/* Titre */}
       <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
         Répartition de vos émissions
       </h2>
 
-      {/* Graphiques */}
       <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-          {/* Graphique en camembert */}
           <div>
             <h3 className="text-base sm:text-lg font-semibold mb-4 text-center">Par catégorie</h3>
             <div className="flex flex-col items-center gap-4">
-              {/* Graphique circulaire */}
               <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-full relative" style={{
                 background: `conic-gradient(
                   #10b981 0% ${alimentationPct}%,
@@ -130,7 +128,6 @@ const ResultsSection = ({ formData }) => {
                 )`
               }}></div>
               
-              {/* Légende */}
               <div className="grid grid-cols-2 gap-2 w-full max-w-xs">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded flex-shrink-0"></div>
@@ -152,7 +149,6 @@ const ResultsSection = ({ formData }) => {
             </div>
           </div>
 
-          {/* Graphique en barres */}
           <div>
             <h3 className="text-base sm:text-lg font-semibold mb-4 text-center">
               Comparaison avec la moyenne
@@ -168,11 +164,9 @@ const ResultsSection = ({ formData }) => {
                 return (
                   <div key={item.label} className="flex-1 flex flex-col items-center">
                     <div className="w-full flex justify-center gap-1 mb-2" style={{ height: '150px' }}>
-                      {/* Barre moyenne (grise) */}
                       <div className="w-6 sm:w-8 bg-gray-300 rounded-t self-end" style={{
                         height: `${(item.avg / maxValue) * 100}%`
                       }}></div>
-                      {/* Barre utilisateur (verte) */}
                       <div className="w-6 sm:w-8 bg-green-500 rounded-t self-end" style={{
                         height: `${(item.value / maxValue) * 100}%`
                       }}></div>
@@ -198,7 +192,6 @@ const ResultsSection = ({ formData }) => {
         </div>
       </div>
 
-      {/* Cartes avec détails */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-blue-50 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
@@ -248,15 +241,22 @@ const ResultsSection = ({ formData }) => {
   );
 };
 
-export default function App() {
+export default function Calculateur() {
   const [formData, setFormData] = useState({
     transport: { voiture: 0, train: 0, bus: 0 },
-    alimentation: { regime: 'Omnivore', frequence: 50 },
+    alimentation: { 
+      regime: 'Omnivore', 
+      kgViande: 0,
+      kgPoisson: 0 
+    },
     energie: { electricite: 0, gaz: 0, renouvelable: false },
     equipements: { nombre: 'Moyen', montant: 50 }
   });
 
   const [showResults, setShowResults] = useState(false);
+  const [calculatedEmissions, setCalculatedEmissions] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const updateField = (section, field, value) => {
     setFormData(prev => ({
@@ -265,30 +265,76 @@ export default function App() {
     }));
   };
 
-  const calculateEmissions = () => {
-    setShowResults(true);
-    storeEmissions([1200, 10]);
-    // Scroll vers les résultats
-    setTimeout(() => {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }, 100);
+  const calculateEmissions = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const transport = formData.transport.voiture * 0.2 + 
+                        formData.transport.train * 0.01 + 
+                        formData.transport.bus * 0.05;
+      
+      const emissionsViande = formData.alimentation.kgViande * 27;
+      const emissionsPoisson = formData.alimentation.kgPoisson * 6;
+      
+      const regimeBaseFactors = {
+        'Omnivore': 1200,
+        'Végétarien': 900,
+        'Végétalien': 600,
+        'Pescetarien': 800
+      };
+      const alimentationBase = regimeBaseFactors[formData.alimentation.regime] || 1200;
+      const alimentation = alimentationBase + emissionsViande + emissionsPoisson;
+      
+      const energie = (formData.energie.electricite * 0.5 + formData.energie.gaz * 0.3) *
+                      (formData.energie.renouvelable ? 0.3 : 1);
+      
+      const consommationFactors = {
+        'Très peu': 500,
+        'Peu': 800,
+        'Moyen': 1050,
+        'Beaucoup': 1500
+      };
+      const consommation = (consommationFactors[formData.equipements.nombre] || 1050) *
+                           (formData.equipements.montant / 100);
+
+      const total = transport + alimentation + energie + consommation;
+
+      const emissions = {
+        transport: Math.round(transport),
+        alimentation: Math.round(alimentation),
+        energie: Math.round(energie),
+        consommation: Math.round(consommation),
+        total: Math.round(total)
+      };
+
+      const token = getAuthToken();
+      
+      if (token) {
+        const result = await saveCalculation(formData, emissions);
+        console.log('✅ Calcul sauvegardé:', result);
+      } else {
+        console.warn('⚠️ Utilisateur non connecté, calcul non sauvegardé');
+      }
+
+      setCalculatedEmissions(emissions);
+      setShowResults(true);
+      
+      setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }, 100);
+
+    } catch (err) {
+      console.error('❌ Erreur:', err);
+      setError(err.message || 'Une erreur est survenue lors du calcul');
+      setShowResults(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  const storeEmissions = (emissions) => {
-    // Check token in localStorage
-    // const token = localStorage.getItem('teddy-token');
-    // fetch ('')
-  }
-
-  const getEmissions = () => {
-    // Check token in localStorage
-    // Send request to api GET /api/emissions
-    // fetch ('')
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
-      {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
         <div className="mb-6 sm:mb-8">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
@@ -299,122 +345,54 @@ export default function App() {
           </p>
         </div>
 
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 text-sm">{error}</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column */}
           <div className="lg:col-span-2">
-            {/* Transport */}
-            <SectionCard
-              icon={Car}
-              title="Transport"
-              subtitle="Km parcourus par mois"
-              color="bg-blue-500"
-            >
-              <InputField
-                label="Voiture (km/mois)"
-                value={formData.transport.voiture}
-                onChange={(val) => updateField('transport', 'voiture', val)}
-              />
-              <InputField
-                label="Train (km/mois)"
-                value={formData.transport.train}
-                onChange={(val) => updateField('transport', 'train', val)}
-              />
-              <InputField
-                label="Bus (km/mois)"
-                value={formData.transport.bus}
-                onChange={(val) => updateField('transport', 'bus', val)}
-              />
+            <SectionCard icon={Car} title="Transport" subtitle="Km parcourus par mois" color="bg-blue-500">
+              <InputField label="Voiture (km/mois)" value={formData.transport.voiture} onChange={(val) => updateField('transport', 'voiture', val)} />
+              <InputField label="Train (km/mois)" value={formData.transport.train} onChange={(val) => updateField('transport', 'train', val)} />
+              <InputField label="Bus (km/mois)" value={formData.transport.bus} onChange={(val) => updateField('transport', 'bus', val)} />
             </SectionCard>
 
-            {/* Alimentation */}
-            <SectionCard
-              icon={Utensils}
-              title="Alimentation"
-              subtitle="Type de régime"
-              color="bg-green-500"
-            >
-              <SelectField
-                label="Type de régime"
-                value={formData.alimentation.regime}
-                onChange={(val) => updateField('alimentation', 'regime', val)}
-                options={['Omnivore', 'Végétarien', 'Végétalien', 'Pescetarien']}
-              />
-              <SliderField
-                label="Fréquence viande/poisson"
-                value={formData.alimentation.frequence}
-                onChange={(val) => updateField('alimentation', 'frequence', val)}
-                min={0}
-                max={100}
-                helpText={`Vous en consommez ${formData.alimentation.frequence}%`}
-              />
+            <SectionCard icon={Utensils} title="Alimentation" subtitle="Type de régime et consommation" color="bg-green-500">
+              <SelectField label="Type de régime" value={formData.alimentation.regime} onChange={(val) => updateField('alimentation', 'regime', val)} options={['Omnivore', 'Végétarien', 'Végétalien', 'Pescetarien']} />
+              <InputField label="Viande rouge/blanche (kg/mois)" value={formData.alimentation.kgViande} onChange={(val) => updateField('alimentation', 'kgViande', val)} />
+              <InputField label="Poisson (kg/mois)" value={formData.alimentation.kgPoisson} onChange={(val) => updateField('alimentation', 'kgPoisson', val)} />
+              <div className="mt-2 p-3 bg-green-50 rounded-lg">
+                <p className="text-xs text-gray-600">
+                  💡 <strong>Moyenne française :</strong> environ 2 kg de viande et 1,5 kg de poisson par mois
+                </p>
+              </div>
             </SectionCard>
 
-            {/* Énergie */}
-            <SectionCard
-              icon={Zap}
-              title="Énergie"
-              subtitle="Utilisation mensuelle"
-              color="bg-yellow-500"
-            >
-              <InputField
-                label="Électricité (kWh/mois)"
-                value={formData.energie.electricite}
-                onChange={(val) => updateField('energie', 'electricite', val)}
-              />
-              <InputField
-                label="Gaz (kWh/mois)"
-                value={formData.energie.gaz}
-                onChange={(val) => updateField('energie', 'gaz', val)}
-              />
+            <SectionCard icon={Zap} title="Énergie" subtitle="Utilisation mensuelle" color="bg-yellow-500">
+              <InputField label="Électricité (kWh/mois)" value={formData.energie.electricite} onChange={(val) => updateField('energie', 'electricite', val)} />
+              <InputField label="Gaz (kWh/mois)" value={formData.energie.gaz} onChange={(val) => updateField('energie', 'gaz', val)} />
               <label className="flex items-center gap-2 text-sm text-gray-700 mt-2">
-                <input
-                  type="checkbox"
-                  checked={formData.energie.renouvelable}
-                  onChange={(e) => updateField('energie', 'renouvelable', e.target.checked)}
-                  className="w-4 h-4 text-green-600 rounded focus:ring-green-500"
-                />
+                <input type="checkbox" checked={formData.energie.renouvelable} onChange={(e) => updateField('energie', 'renouvelable', e.target.checked)} className="w-4 h-4 text-green-600 rounded focus:ring-green-500" />
                 <span className="text-sm sm:text-base">Énergie des énergies renouvelables</span>
               </label>
             </SectionCard>
 
-            {/* Équipements */}
-            <SectionCard
-              icon={ShoppingBag}
-              title="Équipements"
-              subtitle="Achats et consommation"
-              color="bg-purple-500"
-            >
-              <SelectField
-                label="Nombre d'achats"
-                value={formData.equipements.nombre}
-                onChange={(val) => updateField('equipements', 'nombre', val)}
-                options={['Très peu', 'Peu', 'Moyen', 'Beaucoup']}
-              />
-              <SliderField
-                label="Montant par achats (€)"
-                value={formData.equipements.montant}
-                onChange={(val) => updateField('equipements', 'montant', val)}
-                min={0}
-                max={100}
-                helpText={`Vous en dépensez ${formData.equipements.montant}%`}
-              />
+            <SectionCard icon={ShoppingBag} title="Équipements" subtitle="Achats et consommation" color="bg-purple-500">
+              <SelectField label="Nombre d'achats" value={formData.equipements.nombre} onChange={(val) => updateField('equipements', 'nombre', val)} options={['Très peu', 'Peu', 'Moyen', 'Beaucoup']} />
+              <SliderField label="Montant par achats (€)" value={formData.equipements.montant} onChange={(val) => updateField('equipements', 'montant', val)} min={0} max={100} helpText={`Vous en dépensez ${formData.equipements.montant}%`} />
             </SectionCard>
 
-            {/* Calculate Button */}
-            <button
-              onClick={calculateEmissions}
-              className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 touch-manipulation text-base sm:text-lg"
-            >
-              Calculer mon empreinte carbone
+            <button onClick={calculateEmissions} disabled={isLoading} className="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 touch-manipulation text-base sm:text-lg">
+              {isLoading ? (<><span className="animate-spin">⏳</span> Calcul en cours...</>) : ('Calculer mon empreinte carbone')}
             </button>
 
-            {/* Results Section */}
-            {showResults && (
-              <ResultsSection formData={formData} />
+            {showResults && calculatedEmissions && (
+              <ResultsSection formData={formData} emissions={calculatedEmissions} />
             )}
           </div>
 
-          {/* Right Column - Info Box */}
           <div className="lg:col-span-1">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 lg:sticky lg:top-4">
               <div className="text-3xl sm:text-4xl mb-2">💡</div>
