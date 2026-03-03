@@ -265,7 +265,6 @@ export default function Calculateur() {
     }));
   };
 
-<<<<<<< HEAD
   const calculateEmissions = async () => {
     setIsLoading(true);
     setError(null);
@@ -332,28 +331,7 @@ export default function Calculateur() {
     } finally {
       setIsLoading(false);
     }
-=======
-  const calculateEmissions = () => {
-    setShowResults(true);
-    storeEmissions([1200, 10]);
-    // Scroll vers les résultats
-    setTimeout(() => {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }, 100);
->>>>>>> main
   };
-
-  const storeEmissions = (emissions) => {
-    // Check token in localStorage
-    // const token = localStorage.getItem('teddy-token');
-    // fetch ('')
-  }
-
-  const getEmissions = () => {
-    // Check token in localStorage
-    // Send request to api GET /api/emissions
-    // fetch ('')
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
