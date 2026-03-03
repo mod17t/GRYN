@@ -1,6 +1,6 @@
 import { Check, Clock, Leaf, Mail, MapPin, User, LoaderPinwheel, MoveLeft   } from 'lucide-react'
 import React, { useState } from 'react'
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 
 const Contact = () => {
@@ -77,13 +77,12 @@ const Contact = () => {
             body: JSON.stringify(formState)
         })
         .then(response => {
-            let res = response.json();
-            if (res.status !== 200) {
-                setError(res.message);
-                return;
-            }
-
-            return res;
+            return response.json().then(data => {
+                if (!response.ok) {
+                    throw new Error(data?.message || "Une erreur s'est produite");
+                }
+                return data;
+            });
         })
         .then(data => {
             console.log(data);
@@ -91,7 +90,6 @@ const Contact = () => {
         })
         .catch(err => {
             setError(err.message || "Une erreur s'est produite");
-            return;
         })
         .finally(() => {
             setIsLoading(false);
