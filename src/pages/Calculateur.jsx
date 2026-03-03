@@ -4,7 +4,7 @@ import { Trash2, Car, Utensils, Zap, ShoppingBag } from 'lucide-react';
 // Configuration de l'API
 const API_URL = 'http://localhost:8000/api';
 
-const getAuthToken = () => localStorage.getItem('auth_token');
+const getAuthToken = () => localStorage.getItem('account_token') || null;
 
 const saveCalculation = async (formData, emissions) => {
   const response = await fetch(`${API_URL}/calculations`, {
