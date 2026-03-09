@@ -11,6 +11,7 @@ function Navbar() {
         { name: 'Challenges', link: '/challenges'},
         { name: 'Profil', link: '/profil'},
         { name: 'À propos', link: '/about' },
+        { name: 'Contact', link: '/contact'}
     ]
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
