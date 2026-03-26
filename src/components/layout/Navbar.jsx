@@ -1,16 +1,21 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate }   from 'react-router-dom';
-import { IoMenu, IoClose }     from 'react-icons/io5';
-import { LogIn, LogOut, Leaf } from 'lucide-react';
-import { useAuth }             from '../../context/AuthContext';
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { IoMenu, IoClose } from "react-icons/io5";
+import { LogIn, LogOut, Leaf } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
-const NAV_LINKS = [
-  { label: 'Accueil',     to: '/'            },
-  { label: 'Calculateur', to: '/calculateur'  },
-  { label: 'Challenges',  to: '/challenges'   },
-  { label: 'Profil',      to: '/profil'       },
-  { label: 'À propos',    to: '/about'        },
-  { label: 'Contact',     to: '/contact'      },
+const NAV_PUBLIC = [
+  { label: "Accueil", to: "/" },
+  { label: "À propos", to: "/about" },
+  { label: "Contact", to: "/contact" },
+];
+
+const NAV_PRIVATE = [
+  { label: "Accueil", to: "/" },
+  { label: "Calculateur", to: "/calculateur" },
+  { label: "Challenges", to: "/challenges" },
+  { label: "Profil", to: "/profil" },
+  { label: "Contact", to: "/contact" },
 ];
 
 export default function Navbar() {
@@ -18,23 +23,31 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled,   setScrolled]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  const navLinks = isAuthenticated ? NAV_PRIVATE : NAV_PUBLIC;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleLogout = async () => { await logout(); navigate('/login'); };
-  const closeMobile  = ()         => setMobileOpen(false);
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
+  const closeMobile = () => setMobileOpen(false);
 
   return (
     <>
-      <header className={`fixed top-0 left-0 w-full z-40 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-lg' : 'shadow-sm'}`}>
+      <header
+        className={`fixed top-0 left-0 w-full z-40 bg-white transition-shadow duration-300 ${scrolled ? "shadow-lg" : "shadow-sm"}`}
+      >
         <div className="container mx-auto px-4">
-          <nav className={`flex items-center justify-between transition-all duration-300 ${scrolled ? 'py-2' : 'py-3'}`}>
-
+          <nav
+            className={`flex items-center justify-between transition-all duration-300 ${scrolled ? "py-2" : "py-3"}`}
+          >
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <Leaf className="w-6 h-6 text-emerald-600" />
@@ -53,7 +66,7 @@ export default function Navbar() {
 
             {/* Liens desktop */}
             <div className="hidden lg:flex items-center gap-8">
-              {NAV_LINKS.map((item) => (
+              {navLinks.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}
@@ -95,20 +108,32 @@ export default function Navbar() {
       {/* Menu mobile */}
       {mobileOpen && (
         <div className="lg:hidden">
-          <div className="fixed inset-0 z-40 bg-black/30" onClick={closeMobile} aria-hidden="true" />
+          <div
+            className="fixed inset-0 z-40 bg-black/30"
+            onClick={closeMobile}
+            aria-hidden="true"
+          />
           <div className="fixed top-0 right-0 z-50 w-full max-w-xs h-full bg-white shadow-xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <Link to="/" onClick={closeMobile} className="flex items-center gap-2">
+              <Link
+                to="/"
+                onClick={closeMobile}
+                className="flex items-center gap-2"
+              >
                 <Leaf className="w-5 h-5 text-emerald-600" />
                 <span className="font-bold text-gray-900">GRYN</span>
               </Link>
-              <button onClick={closeMobile} className="p-2 text-gray-600" aria-label="Fermer">
+              <button
+                onClick={closeMobile}
+                className="p-2 text-gray-600"
+                aria-label="Fermer"
+              >
                 <IoClose className="h-6 w-6" />
               </button>
             </div>
 
             <nav className="flex-1 px-4 py-6 space-y-1">
-              {NAV_LINKS.map((item) => (
+              {navLinks.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}
@@ -123,7 +148,10 @@ export default function Navbar() {
             <div className="p-4 border-t">
               {isAuthenticated ? (
                 <button
-                  onClick={() => { handleLogout(); closeMobile(); }}
+                  onClick={() => {
+                    handleLogout();
+                    closeMobile();
+                  }}
                   className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-medium transition"
                 >
                   <LogOut size={16} /> Déconnexion
