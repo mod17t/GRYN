@@ -1,46 +1,67 @@
-import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Hero from "./pages/Accueil";
-import Footer from "./components/UI/Footer";
-import ResetPasswordPage from './Pages/ResetPasswordPage';
-import ProfilePage from "./Pages/ProfilePage";
-import Calculateur from "./pages/Calculateur";
-import Challenges from "./pages/Challenges";
-import Login from "./Pages/Login";
-import Apropos from "./Pages/Apropos";
-import Contact from "./components/UI/Contact";
-import ForgotPasswordPage from './Pages/ForgotPasswordPage';
-import EditProfile from "./components/profil/editProfile";
-import ProfileProvider from './context/ProfileContext'
+import { Navigate, Route, Routes } from 'react-router-dom';
+import AuthProvider, { useAuth }  from './context/AuthContext';
+import ProfileProvider            from './context/ProfileContext';
+import Navbar                     from './components/layout/Navbar';
+import Footer                     from './components/layout/Footer';
+import Spinner                    from './components/ui/Spinner';
+import Accueil                    from './pages/Accueil';
+import Calculateur                from './pages/Calculateur';
+import Challenges                 from './pages/Challenges';
+import Login                      from './pages/Login';
+import ProfilePage                from './pages/ProfilePage';
+import EditProfile                from './pages/EditProfile';
+import Apropos                    from './pages/Apropos';
+import Contact                    from './pages/Contact';
+import ForgotPassword             from './pages/ForgotPassword';
+import ResetPassword              from './pages/ResetPassword';
 
-function App() {
-  return (
-    <main>
-        <Navbar />
-        <div className="mt-25">
-          <ProfileProvider>
-            <Routes>
-              <Route path="/" element={<Hero />} />
-              <Route path="/profil" element={<ProfilePage />} />
-              <Route path="/calculateur" element={<Calculateur />} />
-              <Route path="/challenges" element={<Challenges />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/about" element={<Apropos />} />
-              <Route path="/contact" element={<Contact/>} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage/>} />
-              <Route path="/reset-password" element={<ResetPasswordPage/>} />
-              <Route
-                path="/edit-profile"
-                element={
-                  <EditProfile user={{ name: 'alex', email: 'mod@exemple.com' }} />
-                }
-              />
-            </Routes>
-          </ProfileProvider>
-        </div>
-        <Footer />
-      </main>
-  )
+// ─── Garde de route privée ────────────────────────────────────────────────────
+
+function PrivateRoute({ children }) {
+  const { isAuthenticated, isLoading } = useAuth();
+  if (isLoading) return <Spinner />;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
-export default App
+// ─── Routes ───────────────────────────────────────────────────────────────────
+
+function AppRoutes() {
+  return (
+    <Routes>
+      {/* Publiques */}
+      <Route path="/"                element={<Accueil />}       />
+      <Route path="/challenges"      element={<Challenges />}    />
+      <Route path="/about"           element={<Apropos />}       />
+      <Route path="/contact"         element={<Contact />}       />
+      <Route path="/login"           element={<Login />}         />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password"  element={<ResetPassword />} />
+
+      {/* Privées */}
+      <Route path="/calculateur"  element={<PrivateRoute><Calculateur /></PrivateRoute>} />
+      <Route path="/profil"       element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+      <Route path="/edit-profile" element={<PrivateRoute><EditProfile /></PrivateRoute>} />
+
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+// ─── App ──────────────────────────────────────────────────────────────────────
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <ProfileProvider>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-1 mt-16">
+            <AppRoutes />
+          </main>
+          <Footer />
+        </div>
+      </ProfileProvider>
+    </AuthProvider>
+  );
+}
