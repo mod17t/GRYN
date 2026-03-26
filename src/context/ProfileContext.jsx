@@ -1,75 +1,59 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { badgesApi, calculationsApi, profileApi } from '../services/api';
+import { useAuth } from './AuthContext';
 
 export const ProfileContext = createContext(null);
 
-const ProfileProvider = ({ children }) => {
-  const [user,setUser] = useState({
-    firstName: "Alex",
-    lastName: "Martin",
-    email: "alex.martin@email.com",
-    level: 3,
-    points: 1250,
-  });
-  
-  const monthlyData = [
-    { month: "Jan", emissions: 850 },
-    { month: "Fév", emissions: 820 },
-    { month: "Mar", emissions: 780 },
-    { month: "Avr", emissions: 720 },
-    { month: "Mai", emissions: 680 },
-    { month: "Jun", emissions: 650 },
-    { month: "Jul", emissions: 600 },
-    { month: "Aoû", emissions: 580 },
-  ];
+export default function ProfileProvider({ children }) {
+  const { isAuthenticated } = useAuth();
 
-  const badges = [
-    { name: "Éco-débutant", icon: "🌱", date: "Mars 2024", earned: true },
-    { name: "Cycliste urbain", icon: "🚴", date: "Avril 2024", earned: true },
-    { name: "Végétarien", icon: "🥗", date: "Mai 2024", earned: true },
-    { name: "Économe", icon: "💡", date: "Juin 2024", earned: true },
-    { name: "Zéro déchet", icon: "♻️", date: "-", earned: false },
-    { name: "Champion", icon: "🏆", date: "-", earned: false },
-    { name: "Ambassadeur", icon: "⭐", date: "-", earned: false },
-    { name: "Légende", icon: "👑", date: "-", earned: false },
-  ];
+  const [profile,   setProfile]   = useState(null);
+  const [trends,    setTrends]    = useState([]);
+  const [badges,    setBadges]    = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error,     setError]     = useState(null);
 
-  const goals = [
-    {
-      title: "Réduire de 30% mes émissions",
-      progress: 65,
-      target: "Décembre 2025",
-    },
-    { title: "Compléter 20 challenges", progress: 60, target: "Fin d'année" },
-    {
-      title: "Passer sous 500kg CO₂/mois",
-      progress: 80,
-      target: "Septembre 2025",
-    },
-  ];
+  const fetchAll = useCallback(async () => {
+    if (!isAuthenticated) {
+      setProfile(null); setTrends([]); setBadges([]);
+      return;
+    }
 
-  const recentActivities = [
-    {
-      title: "Challenge 'Semaine sans voiture' commencé",
-      date: "Il y a 2 jours",
-      icon: "🚴",
-    },
-    { title: "Badge 'Économe' débloqué", date: "Il y a 5 jours", icon: "💡" },
-    {
-      title: "Nouvelle empreinte calculée: 650kg CO₂",
-      date: "Il y a 1 semaine",
-      icon: "📊",
-    },
-    {
-      title: "Challenge 'Lundi vert' terminé",
-      date: "Il y a 2 semaines",
-      icon: "🥗",
-    },
-  ];
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const [profileRes, trendsRes, badgesRes] = await Promise.all([
+        profileApi.get(),
+        calculationsApi.trends(),
+        badgesApi.index(),
+      ]);
+      setProfile(profileRes.data);
+      setTrends(trendsRes.data);
+      setBadges(badgesRes.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => { fetchAll(); }, [fetchAll]);
+
   return (
-    <ProfileContext.Provider value={{user,setUser, monthlyData, badges, goals, recentActivities}}>
+    <ProfileContext.Provider value={{
+      profile, trends, badges,
+      isLoading, error,
+      refetch: fetchAll,
+      updateProfile: setProfile,
+    }}>
       {children}
     </ProfileContext.Provider>
   );
-};
+}
 
-export default ProfileProvider;
+export function useProfile() {
+  const ctx = useContext(ProfileContext);
+  if (!ctx) throw new Error('useProfile doit être utilisé dans ProfileProvider');
+  return ctx;
+}
